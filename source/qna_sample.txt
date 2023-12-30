@@ -1,0 +1,23 @@
+# test_constitution.pdf
+Q: What is the minimum age to become a senator? 
+A: 30
+
+Q: What is constitution? 
+
+# test_criminology.pptx
+Q: What is criminology?
+
+Q: What is Scientific Criminology?
+
+Q: What is Strain Theory ?
+
+# test_international_debt.csv
+Q: What is the country code for Afghanistan? 
+A: AFG 
+
+Q: How much debt does Afghanistan PPG, multilateral (AMT, current US$) have?
+A: 39107845
+
+# test_The_Adventures_of_Sherlock_Holmes.txt (+ .html, .pdf)
+Q: Who is the main character?
+A: Sherlock Holmes
