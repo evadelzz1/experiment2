@@ -88,24 +88,17 @@ def read_audio(audio_bytes):
 def perform_tts(text):
     try:
         with st.spinner("TTS in progress..."):
-            audio_response = st.session_state.openai.audio.speech.create(
-                model="tts-1",
-                voice=st.session_state.tts_voice,
-                input=text,
-            )
-    except Exception as e:
-        audio_response = None
-        st.error(f"An error occurred: {e}", icon="🚨")
+            if st.session_state.tts_model == "OpenAI":
+                audio_response = st.session_state.openai.audio.speech.create(
+                    model="tts-1",
+                    voice=st.session_state.tts_voice,
+                    input=text,
+                )
+            elif st.session_state.tts_model == "gTTS":
+                tts = gTTS(text=text, lang='en', tld='com', slow=False)
+                audio_response = BytesIO()      # convert to file-like object
+                tts.write_to_fp(audio_response)
 
-    return audio_response
-
-
-def perform_tts2(text):
-    try:
-        with st.spinner("TTS in progress..."):
-            tts = gTTS(text=text, lang='en', tld='com', slow=False)
-            audio_response = BytesIO()      # convert to file-like object
-            tts.write_to_fp(audio_response)
     except Exception as e:
         audio_response = None
         st.error(f"An error occurred: {e}", icon="🚨")
@@ -180,7 +173,7 @@ def run_chatbot():
         # TTS voice selection
         if st.session_state.tts_model == "OpenAI":
             st.session_state.tts_voice = st.radio(
-                label="TTS Voice",
+                label="TTS Voice (for OpenAI)",
                 options=("alloy", "echo","fable","onyx","nova","shimmer"),
                 horizontal=True,
                 index=0,
@@ -212,15 +205,15 @@ def run_chatbot():
             st.write(ai)
 
     # Play TTS
-    if st.session_state.audio_response is not None: # tts_model == "OpenAI"
-        play_audio(st.session_state.audio_response)
-        st.session_state.audio_response = None
-
-    elif st.session_state.audio_response_gtts is not None: # tts_model == "gTTS"
-        st.audio(st.session_state.audio_response_gtts)
-        # audio_tag = f'<audio autoplay="true" src="data:audio/wav;base64,{st.session_state.audio_response_gtts}">'
-        # st.markdown(audio_tag, unsafe_allow_html=True)
-        st.session_state.audio_response_gtts = None
+    if st.session_state.audio_response is not None:
+        if st.session_state.tts_model == "OpenAI":
+            play_audio(st.session_state.audio_response)
+            st.session_state.audio_response = None
+        elif st.session_state.tts_model == "gTTS":
+            st.audio(st.session_state.audio_response)
+            # audio_tag = f'<audio autoplay="true" src="data:audio/wav;base64,{st.session_state.audio_response}">'
+            # st.markdown(audio_tag, unsafe_allow_html=True)
+            st.session_state.audio_response = None
     
     # Reset the conversation
     st.button(label="Reset the conversation", on_click=commonFunc.reset_conversation)
@@ -260,11 +253,8 @@ def run_chatbot():
             cond2 = st.session_state.tts == "Auto" and st.session_state.mic_used
 
             if cond1 or cond2:
-                if st.session_state.tts_model == "OpenAI":
-                    st.session_state.audio_response = perform_tts(generated_text)
-                elif st.session_state.tts_model == "gTTS":
-                    st.session_state.audio_response_gtts = perform_tts2(generated_text)
-                               
+                st.session_state.audio_response = perform_tts(generated_text)
+                    
             st.session_state.mic_used = False
             st.session_state.human_enq.append(user_prompt)
             st.session_state.ai_resp.append(generated_text)
