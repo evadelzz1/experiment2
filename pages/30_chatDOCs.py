@@ -20,9 +20,6 @@ from langchain.document_loaders import UnstructuredHTMLLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
-# from langchain.memory import ConversationBufferMemory
-# from langchain.chains import ConversationalRetrievalChain
-# from langchain.callbacks import StreamlitCallbackHandler
 
 class StreamHandler(BaseCallbackHandler):
     def __init__(self, container, initial_text=""):
