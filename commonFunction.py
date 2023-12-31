@@ -6,6 +6,9 @@ def initialize_session_state_variables():
     if "openai_api_key" not in st.session_state:
         st.session_state.openai_api_key = None
 
+    if "user_password" not in st.session_state:
+        st.session_state.user_password = None
+
     if "openai" not in st.session_state:
         st.session_state.openai = None
 

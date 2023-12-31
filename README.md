@@ -7,7 +7,7 @@
 
 python 환경변수 및 가상환경 설정
 
-    cd ./experiment
+    cd ./experiment2
 
     pyenv versions
 
@@ -18,7 +18,8 @@ python 환경변수 및 가상환경 설정
     echo '.env'  >> .gitignore
     echo '.venv' >> .gitignore
 
-    echo 'OPENAI_API_KEY="sk-9jz...."' >> .env
+    echo 'OPENAI_API_KEY=sk-9jz....' >> .env
+    echo 'USER_PASSWORD=password'    >> .env
 
     ls -la
 
@@ -39,7 +40,3 @@ python 환경변수 및 가상환경 설정
 python 가상환경 deactivate
 
     deactivate
-
-Reference
-
-    Sherlock Holmes Download : https://sherlock-holm.es/
