@@ -128,7 +128,8 @@ def run_chatdoc():
     translator = "You are a translator who translates English into Korean and Korean into English."
     coding_adviser = "You are an expert in coding who provides advice on good coding styles."
     doc_analyzer = "You are an assistant analyzing the document uploaded."
-    roles = (general_role, english_teacher, translator, coding_adviser, doc_analyzer)
+    docQA_analyzer = "You are an assistant analyzing the document uploaded and providing the source"
+    roles = (general_role, english_teacher, translator, coding_adviser, doc_analyzer, docQA_analyzer)
 
     # check ai_role
     if st.session_state.ai_role[1] not in (doc_analyzer):
@@ -219,7 +220,7 @@ def run_chatdoc():
     user_input = st.chat_input(
         placeholder="Enter your query",
         on_submit=enable_user_input,
-        disabled=False
+        disabled=not uploaded_file if st.session_state.ai_role[0] == doc_analyzer else False
     )
 
     if user_input and st.session_state.prompt_exists:

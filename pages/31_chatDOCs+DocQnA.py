@@ -172,11 +172,12 @@ def run_chatdoc():
     translator = "You are a translator who translates English into Korean and Korean into English."
     coding_adviser = "You are an expert in coding who provides advice on good coding styles."
     doc_analyzer = "You are an assistant analyzing the document uploaded."
-    roles = (general_role, english_teacher, translator, coding_adviser, doc_analyzer)
+    docQA_analyzer = "You are an assistant analyzing the document uploaded and providing the source"
+    roles = (general_role, english_teacher, translator, coding_adviser, doc_analyzer, docQA_analyzer)
 
     # check ai_role
-    if st.session_state.ai_role[1] not in (doc_analyzer):
-        st.session_state.ai_role[0] = doc_analyzer
+    if st.session_state.ai_role[1] not in (docQA_analyzer):
+        st.session_state.ai_role[0] = docQA_analyzer
         commonFunc.reset_conversation()
     
     with st.sidebar:
@@ -241,7 +242,7 @@ def run_chatdoc():
     if st.session_state.ai_role[0] != st.session_state.ai_role[1]:
         commonFunc.reset_conversation()
 
-    if st.session_state.ai_role[0] == doc_analyzer:
+    if st.session_state.ai_role[0] == docQA_analyzer:
         st.write("")
         left, right = st.columns([4, 7])
         left.write("##### Document to ask about")
@@ -270,6 +271,18 @@ def run_chatdoc():
         with st.chat_message("ai"):
             st.write(ai)
 
+    # Print source
+    if st.session_state.ai_role[0] == docQA_analyzer and st.session_state.sources is not None:
+        with st.expander("Sources"):
+            c1, c2, _ = st.columns(3)
+            c1.write("Uploaded document:")
+            columns = c2.columns(len(st.session_state.sources))
+            for index, column in enumerate(columns):
+                column.markdown(
+                    f"{index + 1}\)",
+                    help=st.session_state.sources[index].page_content
+                )
+    
     # Reset the conversation
     st.button(label="Reset the conversation", on_click=commonFunc.reset_conversation)
 
@@ -277,7 +290,7 @@ def run_chatdoc():
     user_input = st.chat_input(
         placeholder="Enter your query",
         on_submit=enable_user_input,
-        disabled=False
+        disabled=not uploaded_file if st.session_state.ai_role[0] == docQA_analyzer else False
     )
 
     if user_input and st.session_state.prompt_exists:
