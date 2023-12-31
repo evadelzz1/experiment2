@@ -53,7 +53,8 @@ def run_chatbot():
     translator = "You are a translator who translates English into Korean and Korean into English."
     coding_adviser = "You are an expert in coding who provides advice on good coding styles."
     doc_analyzer = "You are an assistant analyzing the document uploaded."
-    roles = (general_role, english_teacher, translator, coding_adviser, doc_analyzer)
+    docQA_analyzer = "You are an assistant analyzing the document uploaded and providing the source"
+    roles = (general_role, english_teacher, translator, coding_adviser, doc_analyzer, docQA_analyzer)
 
     # check ai_role
     if st.session_state.ai_role[1] not in (general_role, english_teacher):
