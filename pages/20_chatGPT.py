@@ -3,7 +3,8 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 import commonFunction as commonFunc
 
-from langchain.chat_models import ChatOpenAI
+#from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
 from langchain.schema import SystemMessage, HumanMessage
 from langchain.callbacks.base import BaseCallbackHandler
 
