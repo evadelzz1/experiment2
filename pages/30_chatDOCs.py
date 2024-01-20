@@ -11,15 +11,16 @@ from langchain.chat_models import ChatOpenAI
 from langchain.schema import SystemMessage, HumanMessage
 from langchain.callbacks.base import BaseCallbackHandler
 
-from langchain.document_loaders import TextLoader
-from langchain.document_loaders import PyPDFLoader
-from langchain.document_loaders import Docx2txtLoader
-from langchain.document_loaders import UnstructuredPowerPointLoader
-from langchain.document_loaders import CSVLoader
-from langchain.document_loaders import UnstructuredHTMLLoader
+from langchain_community.document_loaders import TextLoader
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import Docx2txtLoader
+from langchain_community.document_loaders import UnstructuredPowerPointLoader
+from langchain_community.document_loaders import CSVLoader
+from langchain_community.document_loaders import UnstructuredHTMLLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import FAISS
+# from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 
 class StreamHandler(BaseCallbackHandler):
     def __init__(self, container, initial_text=""):
